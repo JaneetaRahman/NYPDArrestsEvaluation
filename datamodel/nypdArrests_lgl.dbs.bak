@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="NYPDarrests_lgl" id="LogicalDesign-1040" database="LogicalDesign" >
+<project name="NYPDarrests_lgl" id="Access-ef5" database="Access" >
 	<schema name="INSTANCE" catalogname="NYPDarrests_lgl" >
-		<table name="dim_date" prior="Entity" >
+		<table name="dim_date" >
 			<column name="date_id" type="INT" jt="4" mandatory="y" />
 			<column name="arrest_date" type="DATE" jt="91" />
 			<index name="pk_dim_date" unique="PRIMARY_KEY" >
 				<column name="date_id" />
 			</index>
 		</table>
-		<table name="dim_location" prior="Entity" >
+		<table name="dim_location" >
 			<column name="location_id" type="INT" jt="4" mandatory="y" />
 			<column name="arrest_boro" type="TEXT" jt="-1" />
 			<column name="arrest_precinct" type="INT" jt="4" />
 			<column name="x_coord_cd" type="INT" jt="4" />
 			<column name="y_coord_cd" type="INT" jt="4" />
-			<column name="latitude" prior="Latitude" type="INT" jt="4" />
+			<column name="latitude" type="INT" jt="4" />
 			<column name="longitude" type="INT" jt="4" />
 			<index name="pk_dim_location" unique="PRIMARY_KEY" >
 				<column name="location_id" />
 			</index>
 		</table>
-		<table name="dim_offensetype" prior="dim_offense" >
+		<table name="dim_offensetype" >
 			<column name="offenseType_id" type="VARCHAR" length="50" jt="12" mandatory="y" />
 			<column name="jurisdiction_code" type="INT" jt="4" />
 			<column name="law_code" type="TEXT" jt="-1" />
@@ -29,7 +29,7 @@
 				<column name="offenseType_id" />
 			</index>
 		</table>
-		<table name="dim_perp" prior="Entity" >
+		<table name="dim_perp" >
 			<column name="arrest_id" type="INT" jt="4" mandatory="y" />
 			<column name="age_group" type="TEXT" jt="-1" />
 			<column name="perp_sex" type="TEXT" jt="-1" />
@@ -38,7 +38,7 @@
 				<column name="arrest_id" />
 			</index>
 		</table>
-		<table name="facts_arrests" prior="perp_sex_avg" >
+		<table name="facts_arrests" >
 			<column name="facts_id" type="BIGINT" jt="-5" mandatory="y" />
 			<column name="number_arrests" type="INT" jt="4" />
 			<column name="arrest_id" type="INT" jt="4" mandatory="y" />
@@ -51,30 +51,30 @@
 			<index name="pk_facts_Arrests" unique="PRIMARY_KEY" >
 				<column name="facts_id" />
 			</index>
-			<fk name="fk_facts_Arrests_dim_perp" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_perp" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_Arrests_dim_perp" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_perp" >
 				<fk_column name="arrest_id" pk="arrest_id" />
 			</fk>
-			<fk name="fk_facts_Arrests_dim_location" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_location" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_Arrests_dim_location" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_location" >
 				<fk_column name="precinctLocationID" pk="location_id" />
 			</fk>
-			<fk name="fk_facts_Arrests_dim_location_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_location" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_Arrests_dim_location_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_location" >
 				<fk_column name="arrestcountLocationID" pk="location_id" />
 			</fk>
-			<fk name="fk_facts_Arrests_dim_offensetype" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_offensetype" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_Arrests_dim_offensetype" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_offensetype" >
 				<fk_column name="arrest_id" pk="offenseType_id" />
 			</fk>
-			<fk name="fk_facts_Arrests_dim_offensetype_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_offensetype" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_Arrests_dim_offensetype_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_offensetype" >
 				<fk_column name="offensetype_id" pk="offenseType_id" />
 			</fk>
-			<fk name="fk_facts_Arrests_dim_date" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_date" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_Arrests_dim_date" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_date" >
 				<fk_column name="precinctLocationID" pk="date_id" />
 			</fk>
-			<fk name="fk_facts_arrests_dim_perp_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_perp" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+			<fk name="fk_facts_arrests_dim_perp_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_perp" >
 				<fk_column name="count" pk="arrest_id" />
 			</fk>
 		</table>
 	</schema>
-	<layout name="Default Layout" id="Layout-d08" show_relation="columns" >
+	<layout name="Default Layout" id="Layout-18c7" confirmed="y" show_relation="columns" >
 		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_date" color="C1D8EE" x="320" y="240" />
 		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_location" color="C1D8EE" x="992" y="560" />
 		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_offensetype" color="C1D8EE" x="240" y="544" />
@@ -87,5 +87,55 @@
 - For a better understanding of the schema, create multiple layouts.
 - Deploy the model into the database by converting it first to the physical design.]]></comment>
 		</callout>
+		<script name="SQL_Editor" id="Editor-250e" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA INSTANCE;
+
+CREATE TABLE dim_date ( 
+	date_id              INT  NOT NULL  ,
+	arrest_date          DATE    ,
+	CONSTRAINT pk_dim_date PRIMARY KEY ( date_id )
+ );
+
+CREATE TABLE dim_location ( 
+	location_id          INT  NOT NULL  ,
+	arrest_boro          TEXT    ,
+	arrest_precinct      INT    ,
+	x_coord_cd           INT    ,
+	y_coord_cd           INT    ,
+	latitude             INT    ,
+	longitude            INT    ,
+	CONSTRAINT pk_dim_location PRIMARY KEY ( location_id )
+ );
+
+CREATE TABLE dim_offensetype ( 
+	offenseType_id       VARCHAR(50)  NOT NULL  ,
+	jurisdiction_code    INT    ,
+	law_code             TEXT    ,
+	levelofoffense       TEXT    ,
+	CONSTRAINT pk_dim_offensetype PRIMARY KEY ( offenseType_id )
+ );
+
+CREATE TABLE dim_perp ( 
+	arrest_id            INT  NOT NULL  ,
+	age_group            TEXT    ,
+	perp_sex             TEXT    ,
+	perp_race            TEXT    ,
+	CONSTRAINT pk_dim_perp PRIMARY KEY ( arrest_id )
+ );
+
+CREATE TABLE facts_arrests ( 
+	facts_id             BIGINT  NOT NULL  ,
+	number_arrests       INT    ,
+	arrest_id            INT  NOT NULL  ,
+	precinctLocationID   INT  NOT NULL  ,
+	arrestcountLocationID INT  NOT NULL  ,
+	offensetype_id       INT  NOT NULL  ,
+	perps_sex_avg        INT    ,
+	perps_race_avg       INT    ,
+	count                INT  NOT NULL  ,
+	CONSTRAINT pk_facts_Arrests PRIMARY KEY ( facts_id )
+ );
+]]></string>
+		</script>
 	</layout>
 </project>
