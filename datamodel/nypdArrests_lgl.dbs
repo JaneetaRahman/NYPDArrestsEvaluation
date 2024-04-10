@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="NYPDarrests_lgl" id="LogicalDesign-1040" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="NYPDarrests_lgl" >
+		<table name="dim_legal" prior="Entity" >
+			<column name="legal_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_dim_legal" unique="PRIMARY_KEY" >
+				<column name="legal_id" />
+			</index>
+		</table>
+		<table name="dim_location" prior="Entity" >
+			<column name="location_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_dim_location" unique="PRIMARY_KEY" >
+				<column name="location_id" />
+			</index>
+		</table>
+		<table name="dim_offensetype" prior="dim_offense" >
+			<column name="offenseType_id" type="VARCHAR" length="50" jt="12" mandatory="y" />
+			<index name="pk_dim_offensetype" unique="PRIMARY_KEY" >
+				<column name="offenseType_id" />
+			</index>
+		</table>
+		<table name="dim_perp" prior="Entity" >
+			<column name="arrest_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_dim_perp" unique="PRIMARY_KEY" >
+				<column name="arrest_id" />
+			</index>
+		</table>
+		<table name="facts_Arrests" prior="facts_arrests" >
+			<column name="facts_id" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="number_arrests" type="INT" jt="4" />
+			<column name="arrest_id" type="INT" jt="4" mandatory="y" />
+			<column name="precinctLocationID" type="INT" jt="4" mandatory="y" />
+			<column name="arrestcountLocationID" type="INT" jt="4" mandatory="y" />
+			<index name="pk_facts_Arrests" unique="PRIMARY_KEY" >
+				<column name="facts_id" />
+			</index>
+			<fk name="fk_facts_Arrests_dim_perp" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_perp" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="arrest_id" pk="arrest_id" />
+			</fk>
+			<fk name="fk_facts_Arrests_dim_location" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_location" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="precinctLocationID" pk="location_id" />
+			</fk>
+			<fk name="fk_facts_Arrests_dim_location_0" virtual="y" to_schema="NYPDarrests_lgl.INSTANCE" to_table="dim_location" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="arrestcountLocationID" pk="location_id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-d08" show_relation="columns" >
+		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_legal" color="C1D8EE" x="416" y="320" />
+		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_location" color="C1D8EE" x="992" y="560" />
+		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_offensetype" color="C1D8EE" x="400" y="544" />
+		<entity schema="NYPDarrests_lgl.INSTANCE" name="dim_perp" color="C1D8EE" x="928" y="304" />
+		<entity schema="NYPDarrests_lgl.INSTANCE" name="facts_Arrests" color="C1D8EE" x="592" y="352" />
+		<callout x="48" y="48" pointer="Round" >
+			<comment><![CDATA[This is a layout - a diagram with tools.
+- Create new entities by right-clicking the layout. 
+- Double-click entity headers to edit.
+- For a better understanding of the schema, create multiple layouts.
+- Deploy the model into the database by converting it first to the physical design.]]></comment>
+		</callout>
+	</layout>
+</project>
