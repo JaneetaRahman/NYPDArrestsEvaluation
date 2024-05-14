@@ -37,9 +37,7 @@ ALTER TABLE NYPDarrests_lgl.INSTANCE.dim_perp ADD PRIMARY KEY ( arrest_id )  NOT
 
 CREATE TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ( 
 	facts_id BIGINT NOT NULL  ,
-	number_arrests int64  ,
 	arrest_id int64 NOT NULL  ,
-	arrest_precinct int64 NOT NULL  ,
 	offensetype_id int64 NOT NULL  ,
 	mode_perpsex VARCHAR  ,
 	mode_perprace VARCHAR  ,
