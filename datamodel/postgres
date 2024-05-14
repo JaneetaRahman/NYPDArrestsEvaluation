@@ -1,0 +1,51 @@
+CREATE SCHEMA IF NOT EXISTS "nypdarrests";
+
+CREATE  TABLE "nypdarrests".dim_date ( 
+	date_id              date  NOT NULL  ,
+	CONSTRAINT pk_dim_date PRIMARY KEY ( date_id )
+ );
+
+CREATE  TABLE "nypdarrests".dim_location ( 
+	location_id          varchar(100)  NOT NULL  ,
+	arrest_boro          text    ,
+	arrest_precinct      integer    ,
+	x_coord_cd           integer    ,
+	y_coord_cd           integer    ,
+	latitude             integer    ,
+	longitude            integer    ,
+	CONSTRAINT pk_dim_location PRIMARY KEY ( location_id )
+ );
+
+CREATE  TABLE "nypdarrests".dim_offensetype ( 
+	offensetype_id       varchar  NOT NULL  ,
+	jurisdiction_code    integer    ,
+	law_code             text    ,
+	CONSTRAINT pk_dim_offensetype PRIMARY KEY ( offensetype_id )
+ );
+
+CREATE  TABLE "nypdarrests".dim_perp ( 
+	arrest_id            integer  NOT NULL  ,
+	age_group            text    ,
+	perp_sex             text    ,
+	perp_race            text    ,
+	CONSTRAINT pk_dim_perp PRIMARY KEY ( arrest_id )
+ );
+
+CREATE  TABLE "nypdarrests".facts_arrests ( 
+	facts_id             bigint  NOT NULL  ,
+	arrest_id            integer  NOT NULL  ,
+	offensetype_id       varchar  NOT NULL  ,
+	mode_perpsex         varchar    ,
+	mode_perprace        varchar    ,
+	location_id          varchar(100)  NOT NULL  ,
+	date_id              date  NOT NULL  ,
+	CONSTRAINT pk_facts_arrests PRIMARY KEY ( facts_id, arrest_id, offensetype_id, location_id, date_id )
+ );
+
+ALTER TABLE "nypdarrests".facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_perp FOREIGN KEY ( arrest_id ) REFERENCES "nypdarrests".dim_perp( arrest_id );
+
+ALTER TABLE "nypdarrests".facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_offensetype FOREIGN KEY ( offensetype_id ) REFERENCES "nypdarrests".dim_offensetype( offensetype_id );
+
+ALTER TABLE "nypdarrests".facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_location FOREIGN KEY ( location_id ) REFERENCES "nypdarrests".dim_location( location_id );
+
+ALTER TABLE "nypdarrests".facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_date FOREIGN KEY ( date_id ) REFERENCES "nypdarrests".dim_date( date_id );

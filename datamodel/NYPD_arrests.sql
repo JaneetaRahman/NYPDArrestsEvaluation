@@ -7,7 +7,7 @@ CREATE TABLE NYPDarrests_lgl.INSTANCE.dim_date (
 ALTER TABLE NYPDarrests_lgl.INSTANCE.dim_date ADD PRIMARY KEY ( date_id )  NOT ENFORCED;
 
 CREATE TABLE NYPDarrests_lgl.INSTANCE.dim_location ( 
-	location_id int64 NOT NULL  ,
+	location_id NVARCHAR(100) NOT NULL  ,
 	arrest_boro TEXT  ,
 	arrest_precinct int64  ,
 	x_coord_cd int64  ,
@@ -41,7 +41,7 @@ CREATE TABLE NYPDarrests_lgl.INSTANCE.facts_arrests (
 	offensetype_id VARCHAR NOT NULL  ,
 	mode_perpsex VARCHAR  ,
 	mode_perprace VARCHAR  ,
-	location_id int64 NOT NULL  ,
+	location_id NVARCHAR(100) NOT NULL  ,
 	date_id date NOT NULL  
  );
 
