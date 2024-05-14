@@ -1,47 +1,58 @@
 CREATE SCHEMA INSTANCE;
 
-CREATE TABLE dim_date ( 
-	date_id              INT  NOT NULL  ,
-	arrest_date          DATE    ,
-	CONSTRAINT pk_dim_date PRIMARY KEY ( date_id )
+CREATE TABLE NYPDarrests_lgl.INSTANCE.dim_date ( 
+	date_id int64 NOT NULL  
  );
 
-CREATE TABLE dim_location ( 
-	location_id          INT  NOT NULL  ,
-	arrest_boro          TEXT    ,
-	arrest_precinct      INT    ,
-	x_coord_cd           INT    ,
-	y_coord_cd           INT    ,
-	latitude             INT    ,
-	longitude            INT    ,
-	CONSTRAINT pk_dim_location PRIMARY KEY ( location_id )
+ALTER TABLE NYPDarrests_lgl.INSTANCE.dim_date ADD PRIMARY KEY ( date_id )  NOT ENFORCED;
+
+CREATE TABLE NYPDarrests_lgl.INSTANCE.dim_location ( 
+	location_id int64 NOT NULL  ,
+	arrest_boro TEXT  ,
+	arrest_precinct int64  ,
+	x_coord_cd int64  ,
+	y_coord_cd int64  ,
+	latitude int64  ,
+	longitude int64  
  );
 
-CREATE TABLE dim_offensetype ( 
-	offenseType_id       VARCHAR(50)  NOT NULL  ,
-	jurisdiction_code    INT    ,
-	law_code             TEXT    ,
-	levelofoffense       TEXT    ,
-	CONSTRAINT pk_dim_offensetype PRIMARY KEY ( offenseType_id )
+ALTER TABLE NYPDarrests_lgl.INSTANCE.dim_location ADD PRIMARY KEY ( location_id )  NOT ENFORCED;
+
+CREATE TABLE NYPDarrests_lgl.INSTANCE.dim_offensetype ( 
+	offenseType_id VARCHAR(50) NOT NULL  ,
+	jurisdiction_code int64  ,
+	law_code TEXT  
  );
 
-CREATE TABLE dim_perp ( 
-	arrest_id            INT  NOT NULL  ,
-	age_group            TEXT    ,
-	perp_sex             TEXT    ,
-	perp_race            TEXT    ,
-	CONSTRAINT pk_dim_perp PRIMARY KEY ( arrest_id )
+ALTER TABLE NYPDarrests_lgl.INSTANCE.dim_offensetype ADD PRIMARY KEY ( offenseType_id )  NOT ENFORCED;
+
+CREATE TABLE NYPDarrests_lgl.INSTANCE.dim_perp ( 
+	arrest_id int64 NOT NULL  ,
+	age_group TEXT  ,
+	perp_sex TEXT  ,
+	perp_race TEXT  
  );
 
-CREATE TABLE facts_arrests ( 
-	facts_id             BIGINT  NOT NULL  ,
-	number_arrests       INT    ,
-	arrest_id            INT  NOT NULL  ,
-	precinctLocationID   INT  NOT NULL  ,
-	arrestcountLocationID INT  NOT NULL  ,
-	offensetype_id       INT  NOT NULL  ,
-	perps_sex_avg        INT    ,
-	perps_race_avg       INT    ,
-	count                INT  NOT NULL  ,
-	CONSTRAINT pk_facts_Arrests PRIMARY KEY ( facts_id )
+ALTER TABLE NYPDarrests_lgl.INSTANCE.dim_perp ADD PRIMARY KEY ( arrest_id )  NOT ENFORCED;
+
+CREATE TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ( 
+	facts_id BIGINT NOT NULL  ,
+	number_arrests int64  ,
+	arrest_id int64 NOT NULL  ,
+	arrest_precinct int64 NOT NULL  ,
+	offensetype_id int64 NOT NULL  ,
+	mode_perpsex VARCHAR  ,
+	mode_perprace VARCHAR  ,
+	location_id int64 NOT NULL  ,
+	date_id date NOT NULL  
  );
+
+ALTER TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ADD PRIMARY KEY ( facts_id, arrest_id, offensetype_id, location_id, date_id )  NOT ENFORCED;
+
+ALTER TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_perp FOREIGN KEY ( arrest_id ) REFERENCES NYPDarrests_lgl.INSTANCE.dim_perp( arrest_id ) NOT ENFORCED;
+
+ALTER TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_offensetype FOREIGN KEY ( offensetype_id ) REFERENCES NYPDarrests_lgl.INSTANCE.dim_offensetype( offenseType_id ) NOT ENFORCED;
+
+ALTER TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_location FOREIGN KEY ( location_id ) REFERENCES NYPDarrests_lgl.INSTANCE.dim_location( location_id ) NOT ENFORCED;
+
+ALTER TABLE NYPDarrests_lgl.INSTANCE.facts_arrests ADD CONSTRAINT fk_facts_arrests_dim_date FOREIGN KEY ( date_id ) REFERENCES NYPDarrests_lgl.INSTANCE.dim_date( date_id ) NOT ENFORCED;
