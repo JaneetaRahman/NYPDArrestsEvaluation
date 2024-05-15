@@ -6,7 +6,7 @@ CREATE  TABLE "nypdarrests".dim_date (
  );
 
 CREATE  TABLE "nypdarrests".dim_location ( 
-	location_id          varchar(100)  NOT NULL  ,
+	location_id          integer  NOT NULL  ,
 	arrest_boro          text    ,
 	arrest_precinct      integer    ,
 	x_coord_cd           integer    ,
@@ -37,7 +37,7 @@ CREATE  TABLE "nypdarrests".facts_arrests (
 	offensetype_id       varchar  NOT NULL  ,
 	mode_perpsex         varchar    ,
 	mode_perprace        varchar    ,
-	location_id          varchar(100)  NOT NULL  ,
+	location_id          integer  NOT NULL  ,
 	date_id              date  NOT NULL  ,
 	CONSTRAINT pk_facts_arrests PRIMARY KEY ( facts_id, arrest_id, offensetype_id, location_id, date_id )
  );
